@@ -1,47 +1,118 @@
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class Main
 {
 	public static void main(String[] args) {
-		Employee employee1 = new Employee("John", "Smith", 28, Gender.MALE, "NY", "USA", "Google", "Developer", "Development", HighestQualification.Master);
-		Employee employee2 = new Employee("Alex", "Jones", 25, Gender.MALE, "Toronto", "Canada", "Amazon", "Developer", "Development", HighestQualification.Bachelor);
-		
-		ArrayList<Employee> emp = new ArrayList<Employee>();
-		emp.add(employee1);
-		emp.add(employee2);
-		
-		ArrayList<Employee> newFilteredEmployees = filterEmployeesBasedOnAge(emp);
-		
-		for(Employee filteredEmployee : newFilteredEmployees) {
-		        System.out.println(filteredEmployee.toString());     
-		}
-		
-		System.out.println();
-		
-		ArrayList<Employee> newFilteredEmployees2 = filterEmployeesBasedOnCountry(emp);
-		
-		for(Employee filteredEmployee : newFilteredEmployees2) {
-		        System.out.println(filteredEmployee.toString());     
-		}
+	    
+	    int age;
+	    String country;
+	    ArrayList<Employee> objEmployee = new ArrayList<>();
+	    ArrayList<Employee> filteredEmployee = new ArrayList<>();
+	    
+	    Scanner myObj = new Scanner(System.in); 
+        System.out.println("Press 1: Enter Employee Record");
+        String number = myObj.nextLine();
+        
+        while(true){
+            
+            switch(number){
+                case "1": Employee empl = enterRecord();
+                          objEmployee.add(empl);
+                          System.out.println("Employee data entered successfully!");
+                          break;
+                case "2": System.out.println("Enter age: ");
+                          age = Integer.parseInt(myObj.nextLine());
+                          filteredEmployee = filterEmployeesBasedOnAge(objEmployee, age);
+                          break;
+                case "3": System.out.println("Enter country: ");
+                          country = myObj.nextLine();
+                          filteredEmployee = filterEmployeesBasedOnCountry(objEmployee, country);
+                          break;
+                case "4": System.out.println("Enter country: ");
+                          country = myObj.nextLine();
+                          System.out.println("Enter age: ");
+                          age = Integer.parseInt(myObj.nextLine());
+                          filteredEmployee = filterEmployeesBasedOnCountryAndAge(objEmployee, country, age);
+                          break;
+                default: return;
+            }
+            
+            System.out.println();
+            System.out.println("---------------------------");
+            
+            for(Employee emp:filteredEmployee){
+                System.out.println(emp.toString());
+                System.out.println("---------------------------");
+            }
+            System.out.println();
+            System.out.println("Press 1: Enter Employee Record");
+            System.out.println("Press 2: Filter based on age");
+            System.out.println("Press 3: Filter based on country");
+            System.out.println("Press 4: Filter based on country and age");
+            System.out.println("Press anyother key to exit");
+            number = myObj.nextLine();
+        }
 
 	}
 	
-	static ArrayList<Employee> filterEmployeesBasedOnAge(ArrayList<Employee> emp){
+	
+	static Employee enterRecord(){
+	    Scanner myObj = new Scanner(System.in); 
+	    System.out.print("Firstname: ");
+        String firstname = myObj.nextLine();
+        System.out.print("Lastname: ");
+        String lastname = myObj.nextLine();
+        System.out.print("Age: ");
+        int age = Integer.parseInt(myObj.nextLine());
+        System.out.print("Please enter Gender from(MALE, FEMALE): ");
+        String strGender = myObj.nextLine();
+        Gender gender = Gender.valueOf(strGender);
+        System.out.print("City: ");
+        String city = myObj.nextLine();
+        System.out.print("Country: ");
+        String country = myObj.nextLine();
+        System.out.print("Company: ");
+        String company = myObj.nextLine();
+        System.out.print("Department: ");
+        String department = myObj.nextLine();
+        System.out.print("Role: ");
+        String role = myObj.nextLine();
+        System.out.print("Please enter highest qualification from(Master, Bachelor, PHD): ");
+        String strQualification = myObj.nextLine();
+        HighestQualification qualification = HighestQualification.valueOf(strQualification);
+        
+        return new Employee(firstname, lastname, age, gender, city, country, company, role, department, qualification);
+		
+	}
+	
+	static ArrayList<Employee> filterEmployeesBasedOnAge(ArrayList<Employee> emp, int age){
 	    ArrayList<Employee> filteredEmployee = new ArrayList<>();
 	    int counter = 0;
 	    for(Employee employee: emp){
-	        if(employee.getAge()>25){
+	        if(employee.getAge()>age){
 	            filteredEmployee.add(employee);
 	        }
 	    }
 	    return filteredEmployee;
 	}
 	
-	static ArrayList<Employee> filterEmployeesBasedOnCountry(ArrayList<Employee> emp){
+	static ArrayList<Employee> filterEmployeesBasedOnCountry(ArrayList<Employee> emp, String country){
 	    ArrayList<Employee> filteredEmployee = new ArrayList<>();
 	    int counter = 0;
 	    for(Employee employee: emp){
-	        if(employee.getCountry()=="Canada"){
+	        if(employee.getCountry().equals(country)){
+	            filteredEmployee.add(employee);
+	        }
+	    }
+	    return filteredEmployee;
+	}
+	
+	static ArrayList<Employee> filterEmployeesBasedOnCountryAndAge(ArrayList<Employee> emp, String country, int age){
+	    ArrayList<Employee> filteredEmployee = new ArrayList<>();
+	    int counter = 0;
+	    for(Employee employee: emp){
+	        if(employee.getCountry().equals(country) && employee.getAge() > age){
 	            filteredEmployee.add(employee);
 	        }
 	    }
@@ -122,3 +193,5 @@ class Employee extends Person{
         return "Firstname: "+this.getFirstname()+"\n"+"Lastname: "+this.getLastname()+"\n"+"Age: "+this.getAge()+"\n"+"Gender: "+this.getGender()+"\n"+"Country: "+this.getCountry()+"\n"+"City: "+this.getCity()+"\n"+"Company: "+this.company+"\n"+"Department: "+this.department+"\n"+"Role: "+this.role+"\n"+"Highest Qualification: "+this.qualification;
     }
 }
+
+
