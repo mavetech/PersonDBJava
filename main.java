@@ -1,5 +1,7 @@
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.*;
+import java.util.stream.*;
 
 public class Main
 {
@@ -87,36 +89,30 @@ public class Main
 	}
 	
 	static ArrayList<Employee> filterEmployeesBasedOnAge(ArrayList<Employee> emp, int age){
-	    ArrayList<Employee> filteredEmployee = new ArrayList<>();
-	    int counter = 0;
-	    for(Employee employee: emp){
-	        if(employee.getAge()>age){
-	            filteredEmployee.add(employee);
-	        }
-	    }
-	    return filteredEmployee;
+	    return new ArrayList<Employee>(
+	        emp.stream()
+	            .filter(x->(x.getAge()>age))
+	            .collect(Collectors.toList())
+            );
 	}
 	
 	static ArrayList<Employee> filterEmployeesBasedOnCountry(ArrayList<Employee> emp, String country){
-	    ArrayList<Employee> filteredEmployee = new ArrayList<>();
-	    int counter = 0;
-	    for(Employee employee: emp){
-	        if(employee.getCountry().equals(country)){
-	            filteredEmployee.add(employee);
-	        }
-	    }
-	    return filteredEmployee;
+	    return new ArrayList<Employee>(
+	        emp.stream()
+	        .filter(x->x.getCountry().equals(country))
+	        .collect(Collectors.toList())
+        );
+	    
+	    
 	}
 	
 	static ArrayList<Employee> filterEmployeesBasedOnCountryAndAge(ArrayList<Employee> emp, String country, int age){
-	    ArrayList<Employee> filteredEmployee = new ArrayList<>();
-	    int counter = 0;
-	    for(Employee employee: emp){
-	        if(employee.getCountry().equals(country) && employee.getAge() > age){
-	            filteredEmployee.add(employee);
-	        }
-	    }
-	    return filteredEmployee;
+	   return new ArrayList<Employee>(
+	        emp.stream()
+	         .filter(x->(x.getAge()>age))
+	        .filter(x->x.getCountry().equals(country))
+	        .collect(Collectors.toList())
+        );
 	}
 }
 
@@ -193,5 +189,6 @@ class Employee extends Person{
         return "Firstname: "+this.getFirstname()+"\n"+"Lastname: "+this.getLastname()+"\n"+"Age: "+this.getAge()+"\n"+"Gender: "+this.getGender()+"\n"+"Country: "+this.getCountry()+"\n"+"City: "+this.getCity()+"\n"+"Company: "+this.company+"\n"+"Department: "+this.department+"\n"+"Role: "+this.role+"\n"+"Highest Qualification: "+this.qualification;
     }
 }
+
 
 
